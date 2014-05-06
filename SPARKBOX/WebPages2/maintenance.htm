@@ -1,0 +1,99 @@
+~inc:header.inc~
+~header~
+<div id="content">
+    <h1>MAINTENANCE</h1>
+	<h4>Réservé à un usage interne ou aux utilisateurs avertis !<h4>    
+	<form method="get" action="/maintenance.htm">
+        <div class="boite">
+			<p>Variables</p>
+            <ol>
+               <li> Pilot: <span id="PILO">~Pilot_Value~</span></li>
+               <li> Temp: <span id="TEMP">~Temp~</span></li>
+               <li> Courant1: <span id="COUR1">~Cour1(1)~</span></li>
+			   <li> Courant2: <span id="COUR2">~Cour2(1)~</span></li>
+			   <li> VREF2: <span id="VREF2">~Vref2~</span></li>
+               <li> AC1: <span id="AC1">~Ac1~</span></li>
+               <li> AC2: <span id="AC2">~Ac2~</span></li>
+            </ol>
+            Effacer les maximums de production : <input type="submit" name="deb1" value="EFFACER"></input>
+        </div>
+		<p>TEST HARDWARE</p>
+		<p><input type="submit" name="de1" value="Relais 1" ~rel_existe(1)~></input> Test Relais1</p>
+		<p><input type="submit" name="de2" value="Relais 2" ~rel_existe(2)~></input> Test Relais2</p>
+		<p><input type="submit" name="de3" value="Relais 3" ~rel_existe(3)~></input> Test Relais3</p>
+		<p><input type="submit" name="de4" value="Relais 4" ~rel_existe(4)~></input> Test Relais4</p>
+		<table id="stat">
+        <tr>
+            <th>Bouton: </th>
+            <td>~debug_bt~</td>
+        </tr>
+		<tr>
+            <th>OPTO1 : </th>
+            <td>~opto1~</td>
+        </tr>
+        <tr>
+            <th>OPTO2 : </th>
+            <td>~opto2~</td>
+        </tr>
+		~affiche_teleinfo~
+
+    </table>
+	</br></br>
+    <table>
+		<tr>
+			<td>Uptime :</td>
+			<td><span id="UPT">~Uptime~</span></td>
+		</tr>
+		<tr>
+			<td>Jour :</td>
+			<td>~day~</td>
+		</tr>
+		<tr>
+			<td>Heure :</td>
+			<td><span id="HOUR">~hour~</span></td> 	
+		</tr>
+		<tr>
+			<td>Version Logicielle:</td>
+			<td>~versionsoftadt~</td>
+		</tr>
+		<tr>
+			<td>Version Matérielle:</td>
+			<td>~versionhardadt~</td>
+		</tr>
+		<tr>
+			<td>Date  Logiciel:</td>
+			<td>~builddate~</td>
+		</tr>
+		<tr>
+			<td>Numéro de série : </td>
+			<td>~serialadt~</td>
+		</tr>
+		<tr>
+			<td>Loop/s : </td>
+			<td><span id="LS">~ls~</span></td>
+		</tr>
+	</table>
+	</form>
+</div>	
+<script type="text/javascript">
+<!--
+function fmaint(xmlData) {
+ if (!xmlData)
+ {
+  return;
+ }
+ document.getElementById('UPT').innerHTML = getXMLValue(xmlData, 'UPT');
+ document.getElementById('HOUR').innerHTML = getXMLValue(xmlData, 'HOUR');
+ document.getElementById('LS').innerHTML = getXMLValue(xmlData, 'LS');
+ document.getElementById('PILO').innerHTML = getXMLValue(xmlData, 'PILO');
+ document.getElementById('AC1').innerHTML = getXMLValue(xmlData, 'AC1');
+ document.getElementById('AC2').innerHTML = getXMLValue(xmlData, 'AC2');
+ document.getElementById('COUR1').innerHTML = getXMLValue(xmlData, 'COUR1');
+ document.getElementById('COUR2').innerHTML = getXMLValue(xmlData, 'COUR2');
+ document.getElementById('VREF2').innerHTML = getXMLValue(xmlData, 'VREF2');
+ document.getElementById('TEMP').innerHTML = getXMLValue(xmlData, 'TEMP');
+}
+setTimeout("newAJAXCommand('xmaintenance.xml', fmaint, true)",500);
+//-->
+</script>
+~inc:footer.inc~

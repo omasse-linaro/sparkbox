@@ -1,0 +1,15 @@
+~inc:header.inc~
+~header~
+<div id="content">
+	<h1>Redémarrage de la carte ?</h1>
+	<form method="post" action="/reboot.htm">
+        <div class="boite reboot">
+            <h4>Choisir une action</h4>
+			<h4>Ne pas redémarrer si la voiture est en charge!</h4>
+            <div><input type="button" name="lien_annul" value="Annuler" onclick="self.location.href='/index.htm'"/></div>
+            <br/>
+			<div><input type="button" name="lien" value="Redémarrer" onclick="self.location.href='/fait_reboot.htm'"/></div>
+		</div>
+	</form>
+</div>
+~inc:footer.inc~

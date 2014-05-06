@@ -1,0 +1,88 @@
+~inc:header.inc~
+~header~
+<div id="content">
+    <h1>Bienvenue sur SPARKBOX</h1>
+    <form method="get" action="/index.htm">
+        <div class="boite">
+		<table class="table_index">
+			<caption>EVSE</caption>
+			<tr>
+				<td><b>Etat</b></td>
+				<td><b>Programmé</b></td>
+				<td><b>Mesuré</b></td>
+				<td><b>TELE1</b></td>						
+			</tr>	
+			<tr>
+				<td><span id="ETAT">~state~</span></td> 
+				<td><span id="AMPP">~Amp_Programmes(1)~</span></td> 
+				<td><span id="COUR1">~Cour1(1)~</span></td>	
+				<td><span id="COIN">~tele(1,171)~</span></td> 		
+			</tr>
+		</table>
+		<br/>
+		<table class="table_index">
+			<caption>DUREE</caption>
+			<tr>
+				<td><b>Temps de charge</b></td>	
+			</tr>
+			<tr>
+				<td><span id="TPCH">~temps_charge~</span></td>
+			</tr>
+		</table>
+		<br/>
+		<table class="table_index">
+			<caption>PROTECTION</caption>
+			<tr>
+				<td><b>Courant fuite max</b></td>
+				<td><b>Courant fuite</b></td>
+				<td><b>Test Diode</b></td>
+				<td><b>Test collage relais</b></td>
+			</tr>
+			<tr>
+				<td><span id="FUIT">~Courant_Fuite(1)~</span></td> 
+				<td><span id="COUR2">~Cour2(1)~</span></td>
+				<td><span id="TSTD">~Test_Diode~</span></td>
+				<td><span id="TSTR">~Test_Relais~</span></td>
+			</tr>
+		</table>
+		<br/>
+		<p><span id="TELE">~affiche_teleinfo~</span></p>
+		<br/>
+        </div>
+        <div>
+		<p><span id="ERR">~erreur_xml~</span></p>
+		<p><span id="DEB">~debug1~</span></p>
+		<br/><br/>
+        </div>
+			<table>
+				<tr>
+					<th>Heure :</th>
+					<td><span id="HOUR">~hour~</span></td> 	
+				</tr>
+			</table>
+    </form>	
+</div>
+<script type="text/javascript">
+<!--
+function findex(xmlData) {
+ if (!xmlData)
+ {
+  return;
+ }
+ document.getElementById('ETAT').innerHTML = getXMLValue(xmlData, 'ETAT');
+ document.getElementById('DEB').innerHTML = getXMLValue(xmlData, 'DEB');
+ document.getElementById('ERR').innerHTML = getXMLValue(xmlData, 'ERR');
+ document.getElementById('HOUR').innerHTML = getXMLValue(xmlData, 'HOUR');
+ document.getElementById('COIN').innerHTML = getXMLValue(xmlData, 'COIN');
+ document.getElementById('TPCH').innerHTML = getXMLValue(xmlData, 'TPCH');
+ document.getElementById('TELE').innerHTML = getXMLValue(xmlData, 'TELE');
+ document.getElementById('AMPP').innerHTML = getXMLValue(xmlData, 'AMPP');
+ document.getElementById('COUR1').innerHTML = getXMLValue(xmlData, 'COUR1');
+ document.getElementById('COUR2').innerHTML = getXMLValue(xmlData, 'COUR2');
+ document.getElementById('FUIT').innerHTML = getXMLValue(xmlData, 'FUIT');
+ document.getElementById('TSTR').innerHTML = getXMLValue(xmlData, 'TSTR');
+ document.getElementById('TSTD').innerHTML = getXMLValue(xmlData, 'TSTD');
+}
+setTimeout("newAJAXCommand('xindex.xml', findex, true)",500);
+//-->
+</script>~inc:footer.inc~

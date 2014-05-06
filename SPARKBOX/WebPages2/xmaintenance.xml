@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<response>
+<UPT>~Uptime~</UPT>
+<LS>~ls~</LS>
+<HOUR>~hour~</HOUR>
+<AC1>~Ac1~</AC1>
+<AC2>~Ac2~</AC2>
+<PILO>~Pilot_Value~</PILO>
+<COUR1>~Cour1(1)~</COUR1>
+<COUR2>~Cour2(1)~</COUR2>
+<VREF2>~Vref2~</VREF2>
+<TEMP>~Temp~</TEMP>
+</response>

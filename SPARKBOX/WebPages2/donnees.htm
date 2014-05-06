@@ -1,0 +1,64 @@
+~inc:header.inc~
+~header~
+<div id="content">
+<h1>Données compteur TELE1</h1>
+<div class="result fail" style="display:~status_fail~">
+ATTENTION : Erreur de saisie sur le formulaire ou problème réseau. Essayez de nouveau.
+</div>
+<form method="post" action="/donnees.htm">   
+<div class="boite">
+<select name="mois">
+<option value="1" ~mois(1)~>Janvier</option>
+<option value="2" ~mois(2)~>Février</option>
+<option value="3" ~mois(3)~>Mars</option>
+<option value="4" ~mois(4)~>Avril</option>
+<option value="5" ~mois(5)~>Mai</option>
+<option value="6" ~mois(6)~>Juin</option>
+<option value="7" ~mois(7)~>Juillet</option>
+<option value="8" ~mois(8)~>Aout</option>
+<option value="9" ~mois(9)~>Septembre</option>
+<option value="10" ~mois(10)~>Octobre</option>
+<option value="11" ~mois(11)~>Novembre</option>
+<option value="12" ~mois(12)~>Décembre</option>
+</select>
+<input type="text" name="an" value="~donnees_an~"/>
+<input type="submit" class="va1" value="VALIDER" />
+</div>
+<div class="boite">  
+<h2>~bdtitre~</h2> 
+<pre>   DATE    INDEX    CONSOMMATION </pre>
+~bd(1)~</br>
+~bd(2)~</br>
+~bd(3)~</br>
+~bd(4)~</br>
+~bd(5)~</br>
+~bd(6)~</br>
+~bd(7)~</br>
+~bd(8)~</br>
+~bd(9)~</br>
+~bd(10)~</br>
+~bd(11)~</br>
+~bd(12)~</br>
+~bd(13)~</br>
+~bd(14)~</br>
+~bd(15)~</br>
+~bd(16)~</br>
+~bd(17)~</br>
+~bd(18)~</br>
+~bd(19)~</br>
+~bd(20)~</br>
+~bd(21)~</br>
+~bd(22)~</br>
+~bd(23)~</br>
+~bd(24)~</br>
+~bd(25)~</br>
+~bd(26)~</br>
+~bd(27)~</br>
+~bd(28)~</br>
+~bd(29)~</br>
+~bd(30)~</br>
+~bd(31)~</br>
+</div>
+</form>
+</div>
+~inc:footer.inc~

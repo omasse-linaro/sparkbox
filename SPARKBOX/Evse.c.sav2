@@ -1,0 +1,242 @@
+// EVSE.C
+
+#include <plib.h>
+#include "0_ADTEK.h"
+#include "log.h"
+#include "rtc.h"
+#include "divers.h"
+#include "teleinfo.h"
+#include "evse.h"
+
+#define CHECK_MSEC 5 // Read hardware every 5 msec
+#define PRESS_MSEC 10 // Stable time before registering pressed
+#define RELEASE_MSEC 100 // Stable time before registering released
+
+STRUCT_EVSE	Evse;
+unsigned char Amp[15] = {10,16,20,25,30,35,40,45,50,55,60,65,70,75,80};
+unsigned char bp_ext_sav = 1;
+
+	unsigned int Pwm; // variable to store calculated PWM value
+	unsigned char Mode = 0; // variable to determine ramp up or ramp down
+
+int Init_EVSE(void)
+{
+	Evse.state = STATE_A;
+	Evse.Amp   = 0;
+	Pilot(Amp[Evse.Amp]); 
+	return(0);
+}
+
+int Process_EVSE(void)
+{
+
+	Pilot(Amp[Evse.Amp]); 
+	return(0);
+}
+
+//Pilot(unsigned char ampere);-- Gestion de la sortie Pilot	
+//ampere = 0 -> +12v continu
+// ampere = x -> Sortie 1Khz avec le rapport cyclique calculé pour x Ampères
+int Pilot(unsigned char ampere)
+{
+	static unsigned char 	ampere_sav = 101;
+	unsigned int 			ampere10;	
+	unsigned int 			calc;
+	unsigned int			rapport;
+	unsigned char			error;
+
+	// Gestion des incohérences
+	error = 0;
+	if ((ampere > 0 ) && (ampere < 6) || (ampere > 80))
+	{
+		ampere = 0;
+		error = 1;
+	}
+	if (ampere_sav != ampere)
+	{
+		if (ampere == 0)
+		{	// On stopppe la sortie PWM. OC5 passe à +12v
+//			OpenTimer2(T2_OFF | T2_PS_1_8, 10000);			
+//			OpenOC5( OC_OFF | OC_TIMER_MODE16 | OC_TIMER2_SRC | OC_CONTINUE_PULSE | OC_LOW_HIGH , 10000, 5000); // 10%= 10000, 9000);
+		}
+		else
+		{
+			// Calcul du rapport cyclique
+			if ((ampere >= 6) && (ampere <= 51)) 
+			{	// duty cycle  = Amps / 0,6
+    			ampere10 = (ampere * 10);  
+    			calc = ampere10 / 6;
+   			} 			
+   			else if ((ampere > 51) && (ampere <= 80)) 
+	   		{	// duty cycle  = (Amps / 2,5) + 64
+     			ampere10 = (ampere * 10);  
+     			calc = ampere10 / 25;
+     			calc = calc + 64;
+   			}
+   			rapport = 10000 - (calc * 100); // pour être exploité par PWM
+//			OpenTimer2(T2_ON | T2_PS_1_8, 10000);
+//			ConfigIntOC5(OC_INT_PRIOR_7 | OC_INT_SUB_PRI_2 | OC_INT_ON);
+//			OpenOC5(OC_ON | OC_TIMER_MODE16 | OC_TIMER2_SRC | OC_CONTINUE_PULSE | OC_LOW_HIGH , 10000, rapport); // 10%= 10000, 9000);
+		T2CON = 0x0000; // Enable Timer2 Prescale 1:1 16 bits
+	
+		OC5CON = 0x0000; // Turn off OC1 while doing setup.
+		
+		OC5R = 40000; // Initialize primary Compare Register
+		PR2 = 40000; // Set period
+		OC5CON = 0x0003; // Configure for compare toggle mode
+		
+		IFS0CLR = _IFS0_OC5IF_MASK; 
+		IEC0SET = _IEC0_OC5IE_MASK; 
+		IPC5bits.OC5IP = 7;	
+		IPC5bits.OC5IS = 3;	
+		T2CONSET = 0x8000; // Enable Timer2
+		OC5CONSET = 0x8000; // Enable OC5
+		
+		}
+		ampere_sav = ampere;
+		if (error == 1)
+		{
+			return(-1);
+		}
+		return(0);
+	}
+}
+
+//int Pilot(unsigned char ampere)
+//{
+//	OpenTimer2(T2_ON | T2_PS_1_8, 10000);
+//	ConfigIntOC5(OC_INT_PRIOR_7 | OC_INT_SUB_PRI_2 | OC_INT_ON);
+//	OpenOC5(OC_ON | OC_TIMER_MODE16 | OC_TIMER2_SRC | OC_CONTINUE_PULSE | OC_LOW_HIGH , 10000, 5000);// 10%= 10000, 9000);
+////C5RS = 10000;
+////C5R = 5000;
+////C5CON = OC_ON | OC_TIMER_MODE16 | OC_TIMER2_SRC | OC_CONTINUE_PULSE | OC_LOW_HIGH ;
+//	
+//}	
+//
+//int Pilot(unsigned char ampere)
+//{
+//	T2CON = 0x0000; // Enable Timer2 Prescale 1:1 16 bits
+//	
+//	OC5CON = 0x0000; // Turn off OC1 while doing setup.
+//	OC5CON = 0x0002; // Configure for compare toggle mode
+//	OC5R = 5000; // Initialize primary Compare Register
+//	PR2 = 5000; // Set period
+//	
+//	IFS0CLR = _IFS0_OC5IF_MASK; 
+//	IEC0SET = _IEC0_OC5IE_MASK; 
+//	IPC2SET = _IEC0_OC5IE_MASK; 
+//
+//	T2CONSET = 0x8000; // Enable Timer2
+//	OC5CONSET = 0x8000; // Enable OC5
+//}	
+
+//int Pilot(unsigned char ampere)
+//{
+//	OC5CON = 0x0000; // Turn off OC1 while doing setup.
+//	OC5R = 10000; // Initialize primary Compare Register
+//	OC5RS = 10000; // Initialize secondary Compare Register
+//	OC5CON = 0x0006; //  Configure for PWM mode without Fault pin enabled
+//	PR2 = 20000; // Set period
+//	
+//	IFS0CLR = 0x00000100; // Clear the T2 interrupt flag
+//	IEC0SET = 0x00000100; // Enable T2 interrupt
+//	IPC2SET = 0x0000001C; // Set T2 interrupt priority to 7
+//
+//	T2CONSET = 0x8010; // Enable Timer2 Prescale 1:12 16 bits
+//	OC5CONSET = 0x8000; // Enable OC5
+//}	
+//
+
+void __ISR(_OUTPUT_COMPARE_5_VECTOR, ipl7) OC5_IntHandler (void)
+{
+	LED2 ^= 1;
+	IFS0CLR = _IFS0_OC5IF_MASK;
+}
+
+//void __ISR(_TIMER_2_VECTOR, ipl7) T2_IntHandler (void)
+//{ 
+//	LED2 ^= 1;
+//	IFS0CLR = 0x0100; // Clearing Timer2 interrupt flag
+//}
+
+
+
+void Process_BP_Ext(void)
+{
+	static unsigned char change = 0;
+	static unsigned int  DebounceTime = 0;
+	
+	
+	if ((change == 0 ) && (BP_EXT != bp_ext_sav))
+	{
+		DebounceTime = cpt1ms;
+		change = 1;
+	}
+	if ((change == 1) && ((cpt1ms - DebounceTime) > 50))
+	{
+		if (BP_EXT != bp_ext_sav)
+		{
+			bp_ext_sav = BP_EXT;
+		}
+		change = 0;
+	}
+}
+
+unsigned char Lecture_BP_Ext(void)
+{
+	return(bp_ext_sav);
+}
+
+
+// Pilot(unsigned char ampere) -- Gestion de la sortie Pilot
+//	ampere = 0 -> +12v continu
+//  ampere = x -> Sortie 1Khz avec le rapport cyclique calculé pour x Ampères
+//int Pilot(unsigned char ampere)
+//{
+//	static unsigned char 	ampere_sav = 101;
+//	unsigned int 			ampere10;	
+//	unsigned int 			calc;
+//	unsigned int			rapport;
+//	unsigned char			error;
+//
+//	// Gestion des incohérences
+//	error = 0;
+//	if ((ampere > 0 ) && (ampere < 6) || (ampere > 80))
+//	{
+//		ampere = 0;
+//		error = 1;
+//	}
+//	if (ampere_sav != ampere)
+//	{
+//		if (ampere == 0)
+//		{	// On stopppe la sortie PWM. OC5 passe à +12v
+////			OpenTimer2(T2_OFF | T2_PS_1_8, 10000);			
+////			OpenOC5( OC_OFF | OC_TIMER_MODE16 | OC_TIMER2_SRC | OC_CONTINUE_PULSE | OC_LOW_HIGH , 10000, 5000); // 10%= 10000, 9000);
+//		}
+//		else
+//		{
+//			// Calcul du rapport cyclique
+//			if ((ampere >= 6) && (ampere <= 51)) 
+//			{	// duty cycle  = Amps / 0,6
+//    			ampere10 = (ampere * 10);  
+//    			calc = ampere10 / 6;
+//   			} 			
+//   			else if ((ampere > 51) && (ampere <= 80)) 
+//	   		{	// duty cycle  = (Amps / 2,5) + 64
+//     			ampere10 = (ampere * 10);  
+//     			calc = ampere10 / 25;
+//     			calc = calc + 64;
+//   			}
+//   			rapport = 10000 - (calc * 100); // pour être exploité par PWM
+//			OpenTimer2(T2_ON | T2_PS_1_8, 10000);
+//			ConfigIntOC5(OC_INT_PRIOR_7 | OC_INT_SUB_PRI_2 | OC_INT_ON);
+//			OpenOC5(OC_ON | OC_TIMER_MODE16 | OC_TIMER2_SRC | OC_CONTINUE_PULSE | OC_LOW_HIGH , 10000, rapport); // 10%= 10000, 9000);
+//		}
+//		ampere_sav = ampere;
+//		if (error == 1)
+//		{
+//			return(-1);
+//		}
+//		return(0);
+//	}
+//}

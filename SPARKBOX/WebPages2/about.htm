@@ -1,0 +1,72 @@
+~inc:header.inc~
+~header~
+<div id="content">
+    <h1>A Propos</h1>
+    <form method="get" action="/index.htm">
+			<h2>Conception et développement</h2>
+			<table>
+				<tr>
+					<th>Société :</th>
+					<td>SARL ADTEK</td>
+				</tr>
+				<tr>
+					<th>web :</th>
+					<td>www.adtek.fr</td>
+				</tr>
+				<tr>
+					<th>Email :</th>
+					<td>contact@adtek.fr</td>
+				</tr>
+			</table>	
+			</br></br>
+			<h2>Informations SPARKBox</h2>
+			<table>
+				<tr>
+					<td>Uptime :</td>
+					<td><span id="UPT">~Uptime~</span></td>
+				</tr>
+				<tr>
+					<td>Jour :</td>
+					<td>~day~</td>
+				</tr>
+				<tr>
+					<td>Heure :</td>
+					<td><span id="HOUR">~hour~</span></td> 	
+				</tr>
+				<tr>
+					<td>Version Logicielle:</td>
+					<td>~versionsoftadt~</td>
+				</tr>
+				<tr>
+					<td>Version Matérielle:</td>
+					<td>~versionhardadt~</td>
+				</tr>
+				<tr>
+					<td>Date  Logiciel:</td>
+					<td>~builddate~</td>
+				</tr>
+				<tr>
+					<td>Numéro de série : </td>
+					<td>~serialadt~</td>
+				</tr>
+				<tr>
+					<td>Loop/s : </td>
+					<td><span id="LS">~ls~</span></td>
+				</tr>
+			</table>
+    </form>	
+</div>
+<script type="text/javascript">
+<!--
+function fabout(xmlData) {
+ if (!xmlData)
+ {
+  return;
+ }
+ document.getElementById('UPT').innerHTML = getXMLValue(xmlData, 'UPT');
+ document.getElementById('HOUR').innerHTML = getXMLValue(xmlData, 'HOUR');
+ document.getElementById('LS').innerHTML = getXMLValue(xmlData, 'LS');
+}
+setTimeout("newAJAXCommand('xabout.xml', fabout, true)",500);
+//-->
+</script>~inc:footer.inc~

@@ -1,0 +1,132 @@
+~inc:header.inc~
+~header~
+<div id="content">
+	<h1>Monitoring Mynetmemo</h1>
+	<div class="result fail" style="display:~status_fail~">
+		ATTENTION: Erreur de saisie sur le formulaire ou problème réseau. Essayez de nouveau.
+	</div>
+    <form method="post" action="/mynetmemo.htm">
+        <div>
+            <label class="label_325" for="for_mynetmemo">Activer le service :</label>
+            <input type="checkbox" name = "e1" ~mynet_envoi~/>
+        </div>
+		<div class="boite">
+			<table class="table_mynet">
+                <caption>Identification</caption>
+				<tr>
+                    <th class="c1">Champ</th>
+                    <th class="c2">Valeur</th>
+                </tr>
+				<tr title="Adresse du serveur Mynetmemo (par défaut &quot;mynetmemo.com&quot;)">
+					<td>SERVEUR</td>
+					<td><input type="text" name="ser" value="~mynet_ser~" size="40" maxlength="40"/></td>
+				</tr>
+				<tr title="Port de réception des données (par défaut &quot;80&quot;)">
+					<td>PORT</td>
+					<td><input type="text" name="por" value="~mynet_por~"/></td>
+				</tr>
+				<tr title="Votre Login Mynetmemo (pour information seulement)">
+					<td>LOGIN</td>
+					<td><input type="text" name="log" value="~mynet_log~"/></td>
+				</tr>
+				<tr title="User_Id Mynetmemo pour les données (ce n'est pas le password pour rentrer sur Mynetmemo)">
+					<td id="Password">USER_ID</td>
+					<td><input type="text" name="pas" value="~mynet_pwd~"/></td>
+				</tr>				
+			</table> 
+		</div>
+		<div class="boite">
+			<table class="table_mynet">
+                <caption>Capteurs</caption>
+                <tr>
+                    <th class="c1">Fonction</th>
+                    <th class="c3">Valeur</th>
+                    <th class="c3">ID Mynetmemo</th>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(0)~</td>
+                    <td>~monit_val(0)~</td>
+					<td><input type="text" name="m_00" value="~id_monitor(0)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(1)~</td>
+                    <td>~monit_val(1)~</td>
+					<td><input type="text" name="m_01" value="~id_monitor(1)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(2)~</td>
+                    <td>~monit_val(2)~</td>
+					<td><input type="text" name="m_02" value="~id_monitor(2)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(3)~</td>
+                    <td>~monit_val(3)~</td>
+					<td><input type="text" name="m_03" value="~id_monitor(3)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(4)~</td>
+                    <td>~monit_val(4)~</td>
+					<td><input type="text" name="m_04" value="~id_monitor(4)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(5)~</td>
+                    <td>~monit_val(5)~</td>
+					<td><input type="text" name="m_05" value="~id_monitor(5)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(6)~</td>
+                    <td>~monit_val(6)~</td>
+					<td><input type="text" name="m_06" value="~id_monitor(6)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(7)~</td>
+                    <td>~monit_val(7)~</td>
+					<td><input type="text" name="m_07" value="~id_monitor(7)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(8)~</td>
+                    <td>~monit_val(8)~</td>
+					<td><input type="text" name="m_08" value="~id_monitor(8)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(9)~</td>
+                    <td>~monit_val(9)~</td>
+					<td><input type="text" name="m_09" value="~id_monitor(9)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(10)~</td>
+                    <td>~monit_val(10)~</td>
+					<td><input type="text" name="m_10" value="~id_monitor(10)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(11)~</td>
+                    <td>~monit_val(11)~</td>
+					<td><input type="text" name="m_11" value="~id_monitor(11)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(12)~</td>
+                    <td>~monit_val(12)~</td>
+					<td><input type="text" name="m_12" value="~id_monitor(12)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(13)~</td>
+                    <td>~monit_val(13)~</td>
+					<td><input type="text" name="m_13" value="~id_monitor(13)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(14)~</td>
+                    <td>~monit_val(14)~</td>
+					<td><input type="text" name="m_14" value="~id_monitor(14)~"/></td>
+                </tr>
+				<tr title="Saisir l'ID Mynetmemo correspondant au capteur. Mettre &quot;0&quot; pour désactiver l'envoi pour ce capteur.)">
+                    <td>~monit_fct(15)~</td>
+                    <td>~monit_val(15)~</td>
+					<td><input type="text" name="m_15" value="~id_monitor(15)~"/></td>
+                </tr>
+			</table>
+            <p>(Mettre l'ID Mynetmemo &agrave; z&eacute;ro si non utilis&eacute;)</p>
+		</div>
+        <div><input type="submit" class="sm" value="Sauver Configuration" /></div>
+	</form>
+</div>
+~inc:footer.inc~

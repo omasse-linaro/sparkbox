@@ -1,0 +1,52 @@
+~inc:header.inc~
+~header~
+<div id="content">
+	<h1>PARAMETRES</h1>
+	<div class="result fail" style="display:~status_fail~">
+		ATTENTION : Erreur de saisie sur le formulaire ou problème réseau. Essayez de nouveau.
+		ERREUR = ~Erreur_Parametre~
+	</div>
+    <form method="post" action="/parametres.htm">   
+		<div class="boite">
+			<h4>EVSE</h4>
+			<table class="table_config">
+				<tr>
+				<th class="c1">PARAMETRE</th>
+				<th class="c2">VALEUR</th>
+				<th class="c3">UNITE</th>
+				<th class="c4">DESCRIPTION</th>
+				</tr>
+				~config(0,0)~
+				~config(1,0)~
+				~config(5,0)~
+				~config(6,0)~
+				<tr><td colspan="4" style="height:1px; background-color:#000000;"></td></tr>
+				~config(2,0)~
+				~config(3,0)~
+				~config(4,0)~
+				<tr><td colspan="4" style="height:1px; background-color:#000000;"></td></tr>
+				~config(9,0)~
+				<tr><td colspan="4" style="height:1px; background-color:#000000;"></td></tr>
+				~config(7,0)~
+				~config(8,0)~
+			</table>
+			<br/>	
+			<hr/>
+			<h4>Monitoring à distance</h4>
+			<p>Détermine les possibilités d'envoi de données à distance pour surveiller l'installation</p>
+			<br/>
+			<input type="checkbox" name="mo1" ~monit_mode(1)~/> ADTEK
+			<br/>
+			<input type="checkbox" name="mo4" ~monit_mode(4)~/> Mynetmemo (htp://www.mynetmemo.com)
+			<br/>	
+			<hr/>				
+			<h4>Gestion de l'heure</h4>
+			<p>Détermine le décalage GMT (En france +2h en été, et +1h en hiver)</p>
+			<input title="Valeurs possibles (0 à +3h)" type="text" maxlength="2" size="2" name="gmt" value="~gmt~" disabled />
+			<br/>
+        </div>			
+        <div><input type="submit" class="sm" value="Sauver Configuration"/></div>
+        <p><strong>Date : </strong>~day~ &nbsp; ~hour~</p>
+	</form>
+</div>
+~inc:footer.inc~

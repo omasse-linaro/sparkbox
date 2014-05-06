@@ -1,0 +1,270 @@
+#include "Analogique.h"
+#include "0_ADTEK.h"
+#include <time.h>
+#include <math.h>   // Uniquement pour la racine
+#include "divers.h"
+#include "evse.h"
+
+STRUCT_ANALOG 	Analog[NB_ANALOGIQUE];
+int 			readAdc[NB_ANALOGIQUE] = {0,0,0,0,0};
+
+// Définition du filtre Analogique
+// Attention, il ne faut saisir qu'un moyen de filtrage
+//#define FILTRE_NONE	// Pas de filtrage
+//#define FILTRE_LOW 	// Passe bas
+//#define FILTRE_MOY	// Moyenne
+
+ /*************************************************************************************************
+ *
+ *      Init
+ *
+ **************************************************************************************************/
+void analogiqueInit(void)
+{	
+	unsigned char i;
+	unsigned char temp;
+
+	TRISBbits.TRISB2 = 1;
+	TRISBbits.TRISB3 = 1;
+	TRISBbits.TRISB6 = 1;
+	TRISBbits.TRISB7 = 1;
+	TRISBbits.TRISB10 = 1;
+	
+    AD1CON1 = 0x20F4;			// Configuration de l'horloge et du trigger. // 0010 0000 1111 0100
+                                //Entier 16 bits, Mode auto convert (démarre sur compteur à 0 et s'arrête en générant une IT),
+	
+	AD1CON2 = 0x2410;           // Référence externe vref+	//10010000010000 0x2410
+	
+	                            //Scan des entrées sélectionné Interruption à la 5e conversion
+	                                       
+	AD1CON3 = 0x000F;           // Horloge la plus lente, environ 150Hz
+	AD1CHS = 0x0000;            // Configuration des canaux
+	
+	
+	AD1PCFG = 0xFB33;                       // Configuration des entrées analogiques	// 1111101100110011
+	AD1CSSL = 0x04CC;                       // Canal à scanner     10					// 0000010011001100
+	
+	IPC6bits.AD1IP = 5; // set interrupt priority
+    IPC6bits.AD1IS = 3;
+                            
+       
+	                                       
+	IEC1SET = 2;                            // Autorise les interruptions
+	AD1CON1SET = 0x8000;                    // Mise ON de l'ADC
+	//AD1CON1SET = 0x0004;                  // Démarre l'échantillonnage
+
+   for (i=0; i < NB_ANALOGIQUE; i++)
+   {
+       Analog[i+1].Etat	= CAPTEUR_DEMARRAGE;	
+   }
+}
+
+void analogiqueStart(void)
+{
+	DEBUG = 1;
+	Delay10us(1); // Pour ne pas faire l'acquisition trop près du front
+	//LED2 = 0;
+	readAdc[0] = ADC1BUF0;
+	readAdc[1] = ADC1BUF1;
+	readAdc[2] = ADC1BUF2;
+	readAdc[3] = ADC1BUF3;
+	readAdc[4] = ADC1BUF4;
+	IFS1CLR = 0x0002;
+	IFS1bits.AD1IF = 0;
+	IEC1SET = 2;  			// Enable Interrupts
+	AD1CON1SET = 0x0004; 	// Démarre l'échantillonnage
+}
+
+//==================================================================
+// ADC Interrupt
+// On analyse un lot de 50 résultats, donc en théorie pour le 1kHz
+//	25 ech au niveau bas et 25 ech au niveau haut
+// On garde le min -1 et max -1
+//==================================================================
+void __ISR( _ADC_VECTOR, ipl5 ) ADCHandler( void )
+{
+	static unsigned char echantillons = 0;
+	static int min 		= 1024;
+	static int lastmin 	= 1024;
+	static int max 		= 0;
+	static int lastmax 	= 0;
+	
+	//clear the interrupt flag
+    IFS1bits.AD1IF = 0; 
+	// disable ADC interrupts
+	IEC1bits.AD1IE = 0; 
+
+	// Lecture des buffers ADC
+	readAdc[0] = ADC1BUF0;
+	readAdc[1] = ADC1BUF1;
+	readAdc[2] = ADC1BUF2;
+	readAdc[3] = ADC1BUF3;
+	readAdc[4] = ADC1BUF4;
+
+int i;
+ int adval[16];
+ int *p=(int *)(&ADC1BUF0);
+  
+ for(i=0;i<16;i++){
+   adval[i]=*p;
+   p+=4;
+ }
+
+
+	if (echantillons < 50) // On limite à 50 échantillons car il faut pouvoir répondre en moins de 100ms à une demande de déconnection !
+	{
+		if (readAdc[4] > max)
+		{
+			lastmax = max;
+		 	max = readAdc[4];
+		} 	
+		if (readAdc[4] < min)
+		{
+			lastmin = min;
+		 	min = readAdc[4];
+		} 	
+		echantillons++;
+	}
+	else
+	{
+		// On "exporte" le résultat
+		if (lastmin ==1024) lastmin = min; // Au cas ou la première acquisition ait été le min
+		if (lastmax ==0 ) lastmax = max; // Au cas ou la première acquisition ait été le max
+		Evse.Min = lastmin;
+		Evse.Max = lastmax;
+		min = 1024; lastmin = 1024;
+		max = 0; lastmax = 0;
+		echantillons = 0;
+	}
+	DEBUG = 0;
+
+
+}
+
+
+void analogiqueTask(void)
+{ 
+    static unsigned last_cpt1s;
+    volatile unsigned char temp;
+    unsigned char i;
+    unsigned char ipp;
+    
+    // Traitement des ADC processeur
+    unsigned char cpt_analog;
+    
+    static unsigned int lastTime;
+    int time;
+    
+    //static int 	lowPassMcp[NB_ANALOGIQUE];
+    //int tempFilter;
+    
+    static int readAdc[NB_ANALOGIQUE] = {0,0,0,0,0};
+    static int toto[1000];
+    static int tata[1000];
+    static int cpto = 0;
+    static int cpta = 0;
+    
+    // En fait, il faudrait tester que l'échantillonnage soit bien fini. Si on lit trop vite en relançant le suivant, on lit toujours la même valeur
+    time = TickGet();
+    if ( ( time - lastTime ) >= ( TICK_SECOND / 100 ) ) // Lecture à 100Hz pour faciliter le filtrage
+	{ 
+        lastTime = time;
+      	LED2 = 1;  
+        readAdc[0] = ADC1BUF0;
+        readAdc[1] = ADC1BUF1;
+        readAdc[2] = ADC1BUF2;
+        readAdc[3] = ADC1BUF3;
+        readAdc[4] = ADC1BUF4;
+   
+   		if (PILOT == 0)
+   		{
+   		 	if  (cpto < 1000)
+   			{
+   				toto[cpto] =  readAdc[4];
+   				cpto++;
+   			}
+   		}	
+   		else
+   		{
+   			if  (cpta < 1000)
+   			{
+   				tata[cpta] =  readAdc[4];
+   				cpta++;
+   			}
+   		}
+	
+	  
+    	#if defined (FILTRE_LOW)
+	        for ( i = 0; i < nbAdcPic; i++ )
+	        {
+	            // Filtrage passe-bas
+	            tempFilter = readAdc[i];
+	            tempFilter -= Analog[i].adc;            // x(n) - y(n-1)
+	            //tempFilter *= K_Filtre;               // en Q1.15, mais peut importe finalement
+	            tempFilter *= 0x400;                   // k = 0x400 / 2^15 soit 1024 / 32768 soit 1/32
+	            tempFilter >>= 15;                      // pour repasser au format d'origine, mais peu importe en fait
+	            tempFilter += Analog[i].adc;            // y(n-1) + k [x(n) - y(n-1)]           et k = 1 /(fs * tau)        fs = 100, donc tau = k / fs,  et fc = 1/(2 * pi * tau) = fs * k / ( 2* pi ) = 0.5Hz
+	            Analog[i].adc = tempFilter;
+	        }
+    	#endif
+               
+        // Relance l'échantillonnage suivant
+        AD1CON1SET = 0x0004;	// 0000 0000 0000 0100
+        LED2 = 0;
+    }
+         
+    // Traitement lent ------------ 1S ---------------------------------------------------------------------
+    if ( last_cpt1s != cpt1s )
+    {
+        // 1 -- On traite le premier capteur Analogique (solarimètre)
+        Analog[0].Etat = CAPTEUR_OK;
+        Analog[0].temperature = Analog[0].adc; 		
+ 
+        for (cpt_analog = 1; cpt_analog < NB_ANALOGIQUE; cpt_analog++)
+        {     
+            // ETAT CAPTEUR
+             if (Analog[cpt_analog].adc == 0)		// Valeur au démarrage
+            {
+                Analog[cpt_analog].Etat = CAPTEUR_DEMARRAGE;
+            }
+            else if (Analog[cpt_analog].adc < 13) 	// Probablement un CC
+            {
+                Analog[cpt_analog].Etat = CAPTEUR_ERREUR;
+            }
+            else if (Analog[cpt_analog].adc > 1020)	// Capteur non connecté
+            {
+                Analog[cpt_analog].Etat = CAPTEUR_ABSENT;
+            }
+            else	// OK
+            {
+                Analog[cpt_analog].Etat = CAPTEUR_OK;
+                
+//                Analog[cpt_analog].temperature = ( ( Analog[cpt_analog].adc * Regul.Calib[cpt_analog].delta ) / 1023 ) +  Regul.Calib[cpt_analog].offset ;
+            }  		
+        }
+    }
+    
+    /*static int readAdc[NB_ANALOGIQUE] = {0,0,0,0,0};
+    
+	unsigned int offset;    // buffer offset to point to the base of the idle buffer
+
+   while ( ! mAD1GetIntFlag() ) { } // wait for the first conversion to complete so there will be vaild data in ADC result registers
+
+    // the results of the conversions are available in channel4 and channel5
+    //while (1)
+    
+    readAdc[0] = ReadADC10(2);      // read the result of channel 5 conversion from the idle buffer
+    *
+       for ( i = 0; i < NB_ANALOGIQUE; i++ )
+	        {
+        
+        	
+    
+		
+	            Analog[i].adc = readAdc[i];
+	        }
+
+*/
+}
+
+

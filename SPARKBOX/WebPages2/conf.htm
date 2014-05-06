@@ -1,0 +1,25 @@
+~inc:header.inc~
+~header~
+<div id="content">
+<h1>CONFIGURATION</h1>
+* Menu réservé aux installateurs 18:42*
+<div class="result fail" style="display:~status_fail~">
+ATTENTION : Erreur de saisie sur le formulaire ou problème réseau. Essayez de nouveau.
+</div>
+<form method="post" action="/conf.htm">
+<div class="boite">
+<table class="table_config">
+<caption>CONFIGURATION SYSTEME PVTBOX</caption>
+<tr>
+<th class="c1">PARAMETRE</th>
+<th class="c2">VALEUR</th>
+<th class="c3">UNITE</th>
+<th class="c4">DESCRIPTION</th>
+</tr>
+<tr><td class="c1">DT10</td><td class="c2"><input type="text" maxlength="5" size="5" name "co00" value=" 06,00"/></td><td class="c3">°C</td><td class="c4">DT mise en route FAN (Défaut = 6°C)</td></tr>
+</table>
+</div>
+<div><input type="submit" class="sm" value="Sauver Configuration"/></div>
+</form>
+</div>
+~inc:footer.inc~

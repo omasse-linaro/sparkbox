@@ -1,0 +1,70 @@
+~inc:header.inc~
+~header~
+<div id="content">
+    <h1>Configuration réseau</h1>
+    <p>Cette page permet de configurer la carte réseau de la régulation.</p>
+    <div class="result fail" style="display:~status_fail~">
+        ATTENTION: Erreur de saisie sur le formulaire ou problème réseau. Essayez de nouveau.
+    </div>
+    <p class="error">
+    <strong>ATTENTION :</strong> Des paramètres incorrects peuvent faire perdre la connectivité réseau. En cas de problème revenir à la configuration d'usine.</p>
+    <br/>
+    <br/>
+    <form method="post" action="/reseau.htm">
+        <div class="boite">	
+            <table class="bloc_conf">
+                <caption>Paramètres réseau</caption>
+                 <tr>
+                    <td>Enable DHCP : </td>
+                    <td>
+                        <input type="checkbox" class="sm" name="dhcp" value="1" onclick="configIPBoxes()" ~config_dhcpchecked~/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Adresse IP : </td> 
+                    <td><input type="text" name="ip" value="~config_ip~"/></td>
+                </tr>
+                <tr>
+                    <td>Masque Réseau : </td>		
+                    <td><input type="text" name="sub" value="~config_subnet~"/></td>
+                </tr>
+                <tr>
+                    <td>Passerelle : </td>
+                    <td><input type="text" name="gw" value="~config_gw~"/></td>
+                </tr>
+                <tr>
+                    <td>DNS Principal : </td>
+                    <td><input type="text" name="dns1" value="~config_dns1~"/></td>
+                </tr>
+                <tr>
+                    <td>DNS Secondaire : </td>
+                    <td><input type="text" name="dns2" value="~config_dns2~"/></td>
+                </tr>
+            </table>
+        </div>   
+        <div><input type="submit" class="sm" value="Sauver"/></div>
+    </form>
+    <table id="foot_info">
+        <tr>
+            <th>Version TCPIP : </th>
+            <td>~versiontcpip~</td>
+        </tr>
+    </table>
+</div>
+
+<script type="text/javascript">
+<!--
+function configIPBoxes() {
+	e = document.forms.config;
+	st = e.dhcp.checked;
+	e.ip.disabled = st;
+	e.gw.disabled = st;
+	e.sub.disabled = st;
+	e.dns1.disabled = st;
+	e.dns2.disabled = st;
+}
+
+configIPBoxes();
+//-->
+</script>
+~inc:footer.inc~

@@ -1,0 +1,177 @@
+~inc:header.inc~
+~header~
+<div id="content">
+<h1>Téléinfo</h1>
+<div class="result fail" style="display:~status_fail~">
+ATTENTION : Erreur de saisie sur le formulaire ou problème réseau. Essayez de nouveau.
+</div>
+<form method="post" action="/teleinfo.htm">
+<div class="boite">
+<table class="table_tele">
+<caption>Téléinformation compteur Electrique</caption>
+<tr>
+<th>TELEINFO</th>
+<th>TELE 1 - SPARKBOX</th>
+<th>TELE 2 - GENERAL</th>
+</tr>
+<tr title="Numéro de série du compteur électronique">
+<td>ADCO</td>
+<td>~tele(1,0)~</td>
+<td>~tele(2,0)~</td>
+</tr>
+<tr title="Option Tarifaire programmée dans le compteur">
+<td>OPTARIF</td>
+<td>~tele(1,1)~</td>
+<td>~tele(2,1)~</td>
+</tr>
+<tr title="Intensité souscrite">
+<td>ISOUSC</td>
+<td>~tele(1,2)~</td>
+<td>~tele(2,2)~</td>
+</tr>
+<tr title="Index tarif BASE">
+<td>BASE</td>
+<td>~tele(1,3)~</td>
+<td>~tele(2,3)~</td>
+</tr>
+<tr title="Index tarif Heures Creuses">
+<td>HCHC</td>
+<td>~tele(1,4)~</td>
+<td>~tele(2,4)~</td>
+</tr>
+<tr title="Index tarif Heures Pleines">
+<td>HCHP</td>
+<td>~tele(1,5)~</td>
+<td>~tele(2,5)~</td>
+</tr>
+<tr title="Index tarif EJP Heures Normales">
+<td>EJP_HN</td>
+<td>~tele(1,6)~</td>
+<td>~tele(2,6)~</td>
+</tr>
+<tr title="Index tarif EJP Heures de Pointes Mobiles">
+<td>EJP_HPM</td>
+<td>~tele(1,7)~</td>
+<td>~tele(2,7)~</td>
+</tr>
+<tr title="Index tarif Tempo Jour Bleus Heures Creuses">
+<td>BRR_HC_JB</td>
+<td>~tele(1,8)~</td>
+<td>~tele(2,8)~</td>
+</tr>
+<tr title="Index tarif Tempo Jour Bleus Heures Pleines">
+<td>BRR_HP_JB</td>
+<td>~tele(1,9)~</td>
+<td>~tele(2,9)~</td>
+</tr>
+<tr title="Index tarif Tempo Jour Blancs Heures Creuses">
+<td>BRR_HC_JW</td>
+<td>~tele(1,10)~</td>
+<td>~tele(2,10)~</td>
+</tr>
+<tr title="Index tarif Tempo Jour Blancs Heures Pleines">
+<td>BRR_HP_JW</td>
+<td>~tele(1,11)~</td>
+<td>~tele(2,11)~</td>
+</tr>
+<tr title="Index tarif Tempo Jour Rouge Heures Creuses">
+<td>BRR_HC_JR</td>
+<td>~tele(1,12)~</td>
+<td>~tele(2,12)~</td>
+</tr>
+<tr title="Index tarif Tempo Jour Rouge Heures Pleines">
+<td>BRR_HP_JR</td>
+<td>~tele(1,13)~</td>
+<td>~tele(2,13)~</td>
+</tr>
+<tr title="Période tarifaire en cours">
+<td>PTEC</td>
+<td>~tele(1,15)~</td>
+<td>~tele(2,15)~</td>
+</tr>
+<tr title="Couleur du lendemain (TEMPO)">
+<td>DEMAIN</td>
+<td>~tele(1,16)~</td>
+<td>~tele(2,16)~</td>
+</tr>
+<tr title="Intensité instantanée Phase 1(A)">
+<td>IINST1</td>
+<td>~tele(1,171)~</td>
+<td>~tele(2,171)~</td>
+</tr>
+<tr title="Intensité instantanée Phase 2(A)">
+<td>IINST2</td>
+<td>~tele(1,172)~</td>
+<td>~tele(2,172)~</td>
+</tr>
+<tr title="Intensité instantanée Phase 3(A)">
+<td>IINST3</td>
+<td>~tele(1,173)~</td>
+<td>~tele(2,173)~</td>
+</tr>
+<tr title="Intensité maximale atteinte Phase 1">
+<td>IMAX1</td>
+<td>~tele(1,191)~</td>
+<td>~tele(2,191)~</td>
+</tr>
+<tr title="Intensité maximale atteinte Phase 2">
+<td>IMAX2</td>
+<td>~tele(1,192)~</td>
+<td>~tele(2,192)~</td>
+</tr>
+<tr title="Intensité maximale atteinte Phase 3">
+<td>IMAX3</td>
+<td>~tele(1,193)~</td>
+<td>~tele(2,193)~</td>
+</tr>
+<tr TITLE="Puissance maximale appelée en triphasé(W)">
+<td>PMAX</td>
+<td>~tele(1,194)~</td>
+<td>~tele(2,194)~</td>
+</tr>
+<tr title="Puissance apparente (VA)">
+<td>PAPP</td>
+<td>~tele(1,20)~</td>
+<td>~tele(2,20)~</td>
+</tr>
+<tr title="Groupe horaire (si Heures Creuse ou Tempo -> A,C,D,E,Y)">
+<td>HHPHC</td>
+<td>~tele(1,21)~</td>
+<td>~tele(2,21)~</td>
+</tr>
+<tr>
+<th>Données calculées</th>
+<th>TELE 1 - SPARKBOX</th>
+<th>TELE 2 - GENERAL</th>
+</tr>
+<tr title="Puissance calculée sur une minute">
+<td><i>PUISSANCE INST</i></td>
+<td>~tele(1,40)~</td>
+<td>~tele(2,40)~</td>
+</tr>
+<tr title="Cumul des index">
+<td><i>CUMUL INDEX</i></td>
+<td>~tele(1,41)~</td>
+<td>~tele(2,41)~</td>
+</tr>
+<tr title="Puissance instantanée max journée">
+<td><i>PUISSANCE MAX JOURNEE</i></td>
+<td>~tele(1,42)~</td>
+<td>~tele(2,42)~</td>
+</tr>
+<tr title="Puisance apparente max journée">
+<td><i>PAPP MAX JOURNEE</i></td>
+<td>~tele(1,43)~</td>
+<td>~tele(2,43)~</td>
+</tr>
+<tr title="ADT05: Erreurs de lecture de trames téléinfos">
+<td><i>CPR_ERR</i></td>
+<td>~tele(1,26)~</td>
+<td>~tele(2,26)~</td>
+</tr>
+</table>
+</div>
+<div><input type="submit" class="sm" value="Actualiser"/></div>
+</form>
+</div>
+~inc:footer.inc~

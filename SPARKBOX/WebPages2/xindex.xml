@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<response>
+<DEB>~debug1~</DEB>
+<HOUR>~hour~</HOUR>
+<ERR>~erreur_xml~</ERR>
+<ETAT>~state~</ETAT>
+<COIN>~tele(1,171)~</COIN>
+<TPCH>~temps_charge~</TPCH>
+<TELE>~affiche_teleinfo~</TELE>
+<AMPP>~Amp_Programmes(1)~</AMPP>
+<COUR1>~Cour1(1)~</COUR1>
+<COUR2>~Cour2(1)~</COUR2>
+<FUIT>~Courant_Fuite(1)~</FUIT> 
+<TSTD>~Test_Diode~</TSTD>
+<TSTR>~Test_Relais~</TSTR>
+</response>
