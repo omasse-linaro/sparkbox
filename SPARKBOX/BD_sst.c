@@ -5,7 +5,7 @@
 #include "0_SPARKBOX.h"
 #include "SST25VF016.h"
 #include "log.h"
-#include "Teleinfo.h"
+#include "teleinfo.h"
 #include "BD_sst.h"
 #include <stdio.h>
 #include <stdlib.h>

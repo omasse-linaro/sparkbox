@@ -11,7 +11,7 @@
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/ or
  * send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.
  *********************************************************************************************************/
-#include "Analogique.h"
+#include "analogique.h"
 #include "0_SPARKBOX.h"
 #include <time.h>
 #include <math.h>   // Uniquement pour la racine

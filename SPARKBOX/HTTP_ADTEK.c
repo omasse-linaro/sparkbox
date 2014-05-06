@@ -30,7 +30,7 @@
 #include "0_SPARKBOX.h"
 #include "log.h"
 #include "divers.h"
-#include "Evse.h"
+#include "evse.h"
 #include <time.h>
 #include <string.h>
 

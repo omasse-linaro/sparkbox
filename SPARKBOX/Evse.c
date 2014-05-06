@@ -566,11 +566,26 @@ void __attribute((interrupt(ipl3), vector(_TIMER_2_VECTOR), nomips16)) _T2Interr
 unsigned char Amperage(void)
 {
 	unsigned char			amp = 0;
+	unsigned int			used_amp = 0;
 	static unsigned char	sav_amp = 0;
 	unsigned char			buf[17];
 	static unsigned int		amp_cpt1ms = 0;
 
-	amp = Sparkbox.Amp;
+        if (Compteur[0].etat == CAPTEUR_OK)
+        {
+            used_amp = Compteur[0].calc_iinst;
+            if (Evse.Etat_Relais == ON)
+            {
+                used_amp -= sav_amp;
+            }
+            if (used_amp+Sparkbox.Amp < Compteur[0].nISousc)
+            {
+                amp = Sparkbox.Amp;
+            } else {
+                amp = Compteur[0].nISousc - used_amp;
+            }
+        }
+
 	if (OPTO1_FILTRE == OPTO_ON)
 	{
 		amp = Sparkbox.Amp_Reduit1;
