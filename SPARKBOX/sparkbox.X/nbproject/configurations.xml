@@ -54,22 +54,21 @@
       <itemPath>../TCPIPConfig.h</itemPath>
       <itemPath>../rs232.h</itemPath>
       <itemPath>../Eeprom_i2c.h</itemPath>
-      <itemPath>../Mynetmemo.h</itemPath>
-      <itemPath>../Temperature.h</itemPath>
-      <itemPath>../Teleinfo.h</itemPath>
       <itemPath>../log.h</itemPath>
       <itemPath>../divers.h</itemPath>
-      <itemPath>../HTTP.h</itemPath>
       <itemPath>../HTTPPrint.h</itemPath>
       <itemPath>../mcp7941.h</itemPath>
-      <itemPath>../RTC.h</itemPath>
       <itemPath>../0_SparkBox_Version.h</itemPath>
       <itemPath>../Lcd.h</itemPath>
-      <itemPath>../Analogique.h</itemPath>
-      <itemPath>../Evse.h</itemPath>
       <itemPath>../0_SPARKBOX.h</itemPath>
       <itemPath>../i2c.h</itemPath>
       <itemPath>../BD_sst.h</itemPath>
+      <itemPath>../teleinfo.h</itemPath>
+      <itemPath>../mynetmemo.h</itemPath>
+      <itemPath>../temperature.h</itemPath>
+      <itemPath>../analogique.h</itemPath>
+      <itemPath>../evse.h</itemPath>
+      <itemPath>../http.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -138,7 +137,6 @@
       <itemPath>../Mynetmemo.c</itemPath>
       <itemPath>../Eeprom_i2c.c</itemPath>
       <itemPath>../Temperature.c</itemPath>
-      <itemPath>../Teleinfo.c</itemPath>
       <itemPath>../log.c</itemPath>
       <itemPath>../SSLCert.c</itemPath>
       <itemPath>../divers.c</itemPath>
@@ -152,6 +150,7 @@
       <itemPath>../Evse.c</itemPath>
       <itemPath>../i2c.c</itemPath>
       <itemPath>../BD_sst.c</itemPath>
+      <itemPath>../teleinfo.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -175,7 +174,7 @@
         <platformTool>Simulator</platformTool>
         <languageToolchain>XC32</languageToolchain>
         <languageToolchainVersion>1.31</languageToolchainVersion>
-        <platform>3</platform>
+        <platform>2</platform>
       </toolsSet>
       <compileType>
         <linkerTool>

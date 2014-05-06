@@ -54,7 +54,7 @@ void TeleInit( void )
     
     	Compteur[selPort].etat				= CAPTEUR_DEMARRAGE;
         Compteur[selPort].erreur			= 0;     
-		Efface_Compteur_Tele(selPort);  	// Effacement des infos du télérelevé  
+        Efface_Compteur_Tele(selPort);  	// Effacement des infos du télérelevé
         Compteur[selPort].fonction			= 0; 
         Compteur[selPort].id				= 0; 
         Compteur[selPort].base[0]			= 0x00;
@@ -68,7 +68,8 @@ void TeleInit( void )
         Compteur[selPort].calc_cpt1s 		= 0;
         Compteur[selPort].calc_iinst 		= 0;
         Compteur[selPort].calc_max_papp 	= 0;
-		Compteur[selPort].calc_max_puis 	= 0;
+        Compteur[selPort].calc_max_puis 	= 0;
+        Compteur[selPort].nISousc        	= 0;
         
         // On lance le calcul d'un index cumulé
         Process_Calcul_Index(selPort);     
