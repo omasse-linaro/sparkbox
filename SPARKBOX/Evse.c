@@ -584,7 +584,10 @@ unsigned char Amperage(void)
             } else {
                 amp = Compteur[0].nISousc - used_amp;
             }
+        } else {
+            amp = Sparkbox.Amp;
         }
+
 
 	if (OPTO1_FILTRE == OPTO_ON)
 	{
